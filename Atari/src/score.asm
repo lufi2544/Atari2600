@@ -1,12 +1,23 @@
 
 	processor 6502
 
-	org $F000
-	seg Code
-
 	include "vcs.h"
 	include "macro.h"
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Start an uninitialized segment at $80 for variable declaration.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	seg.u Variables
+	org $80
+P0Height ds 1				; defines one byte for player 0 height.
+P1Height ds 1				; defines one byte for player 1 height.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Start our ROM segment
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	seg
+	org $F000
 
 Start: 
 	CLEAN_START				; Clears the stack, mapped TIA registers, zero page memory region.
@@ -17,8 +28,15 @@ Start:
 	lda #$40
 	sta COLUP0				; Setting the color for the player 0
 	
-	lda #$1F				; Setting the color for the player 1
+	lda #$1F				; Setting the color for the player 1	
 	sta COLUP1
+
+	lda #%0000010			; Setting the Score Mode Color
+	sta CTRLPF
+
+	lda #10
+	sta P0Height
+	sta P1Height			; Setting the P0/1 Heights
 
 FrameStart:
 	lda #%00000010			; bit 2 in A register
@@ -99,7 +117,7 @@ Player0Loop:
 	sta GRP0 
 	sta WSYNC
 	iny
-	cpy #10
+	cpy P0Height
 	bne Player0Loop
 
 	lda #0
@@ -114,7 +132,7 @@ Player1Loop:
 	sta GRP1
 	sta WSYNC
 	iny
-	cpy #10
+	cpy P1Height
 	bne Player1Loop
 
 	lda #0
