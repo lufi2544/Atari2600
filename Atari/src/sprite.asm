@@ -28,7 +28,7 @@ GraphicsC equ #%00000010 ; Global var for initializing the Vsync and VBlank
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Start:
 	CLEAN_START
-	lda #120
+	lda #183
 	ldx #9
 	sta Player0Y
 	stx Player0H
@@ -70,7 +70,7 @@ Vblank:
 ;; 192 Visible Scanlines
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ldx #192
-LoopVisible:				; Try draw player comparing current scanline number with the PlayerY Position.  
+LoopVisible:				; Try draw player comparing current scanline number with the PlayerY Position.  	
 	txa	
 	sec
 	sbc Player0Y
@@ -81,22 +81,22 @@ LoopVisible:				; Try draw player comparing current scanline number with the Pla
 ;;  Set the Player Color and Graphics Register in the TIA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DrawPlayer:
-	tay						; Y = Result of the DeltaPlayer0H
+	sta WSYNC
+	tay						; Y = Result of the DeltaPlayer0H	
 	sty $84					; $84 = Y
 	ldy Player0H			; Y = Player0H
 	dey						; Y--
 	tya						; A = Y(PlayerH-1)
 	sec 					; Set Carry Flag
-	sbc $84					; A-=($84(Player0H - 1))
+	sbc $84					; A-=($84(DeltaResultP0))
 	tay						; Y = result of the delta coordinate 	
-	lda FruitBitMap,Y		; Extract the graphicsPattern for the player
-	sta GRP0		 
-
+	lda FruitBitMap,Y		; Extract the graphicsPattern for the player	
+	sta GRP0
 	lda FruitColorBitMap,Y	; Extract the color for the player
 	sta COLUP0
-	sta WSYNC
 	dex 
 	bne LoopVisible
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 35 Over Scan Scanlines
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -122,17 +122,9 @@ Overscan:
 
 	org $FFE9
 FruitColorBitMap:				; 9 bytes Think about this as an aray with lenght 9 and indx from 0 to 8
-	.byte #$C5
-	.byte #$44
-	.byte #$44
-	.byte #$44
-	.byte #$43
-	.byte #$43
-	.byte #$41
-	.byte #$41
-	.byte #$0F
+	.byte $C5, $44, $44, $44, $43, $43, $41, $41, $F0
 
-	org $FFF3					; 9 bytes
+	org $FFF2					; 9 bytes
 FruitBitMap:				 
 	.byte #%00011000
 	.byte #%01101100
