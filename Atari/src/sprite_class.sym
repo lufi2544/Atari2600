@@ -21,13 +21,12 @@ CXM1P                    0001
 CXP0FB                   0002                  
 CXP1FB                   0003                  
 CXPPMM                   0007                  
-DrawPlayer               f03f              (R )
+DrawPlayer               f086              (R )
 ENABL                    001f                  
 ENAM0                    001d                  
 ENAM1                    001e                  
-FrameStart               f017              (R )
-FruitBitMap              f074              (R )
-FruitColorBitMap         f06b              (R )
+FruitBitMap              f0f7              (R )
+FruitColorBitMap         f0ee              (R )
 GraphicsC                0002              (R )
 GRP0                     001b              (R )
 GRP1                     001c                  
@@ -45,10 +44,9 @@ INPT3                    000b
 INPT4                    000c                  
 INPT5                    000d                  
 INTIM                    0284                  
-LoopVisible              f035              (R )
 NUSIZ0                   0004                  
 NUSIZ1                   0005                  
-Overscan                 f05f              (R )
+Overscan                 f0ab                  
 PF0                      000d                  
 PF1                      000e                  
 PF2                      000f                  
@@ -57,6 +55,7 @@ Player0Y                 0081              (R )
 REFP0                    000b                  
 REFP1                    000c                  
 RESBL                    0014                  
+Reset                    f000              (R )
 RESM0                    0012                  
 RESM1                    0013                  
 RESMP0                   0028                  
@@ -64,7 +63,9 @@ RESMP1                   0029
 RESP0                    0010                  
 RESP1                    0011                  
 RSYNC                    0003                  
-Start                    f000              (R )
+Scanline                 f077              (R )
+SkipDraw                 f0a0              (R )
+StartFrame               f017              (R )
 SWACNT                   0281                  
 SWBCNT                   0283                  
 SWCHA                    0280                  
@@ -77,14 +78,12 @@ TIM1T                    0294
 TIM64T                   0296                  
 TIM8T                    0295                  
 TIMINT                   0285                  
-Vblank                   f02a              (R )
 VBLANK                   0001              (R )
 VDELBL                   0027                  
 VDELP0                   0025                  
 VDELP1                   0026                  
 VERSION_MACRO            006a                  
 VERSION_VCS              0069                  
-Vsync                    f01f              (R )
 VSYNC                    0000              (R )
 WSYNC                    0002              (R )
 --- End of Symbol List.

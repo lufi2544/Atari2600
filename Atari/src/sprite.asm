@@ -76,12 +76,14 @@ LoopVisible:				; Try draw player comparing current scanline number with the Pla
 	sbc Player0Y
 	cmp Player0H			; if result is < Player0H then Draw Player and >= 0
 	bcc DrawPlayer
-	lda #0
+	lda Player0H
+	tay 					; setting the Y to Player0H
+	dey						; Y-- Y = (Player0H - 1)
+	tya
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  Set the Player Color and Graphics Register in the TIA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DrawPlayer:
-	sta WSYNC
 	tay						; Y = Result of the DeltaPlayer0H	
 	sty $84					; $84 = Y
 	ldy Player0H			; Y = Player0H
@@ -90,6 +92,7 @@ DrawPlayer:
 	sec 					; Set Carry Flag
 	sbc $84					; A-=($84(DeltaResultP0))
 	tay						; Y = result of the delta coordinate 	
+	sta WSYNC				; CPU HOLD FOR TIA finishing drawing the current scanline so we avoid manpulating the registers mid scanline drawing
 	lda FruitBitMap,Y		; Extract the graphicsPattern for the player	
 	sta GRP0
 	lda FruitColorBitMap,Y	; Extract the color for the player
@@ -111,8 +114,8 @@ Overscan:
 
 	lda #0
 	sta VBLANK
-
 	
+	dec Player0Y
 	jmp FrameStart
 
 
@@ -120,12 +123,19 @@ Overscan:
 ;; SPRITES DEFINITION
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	org $FFE9
 FruitColorBitMap:				; 9 bytes Think about this as an aray with lenght 9 and indx from 0 to 8
-	.byte $C5, $44, $44, $44, $43, $43, $41, $41, $F0
+	.byte #$00
+	.byte #$D2
+	.byte #$44
+	.byte #$44
+	.byte #$42
+	.byte #$42
+	.byte #$40
+	.byte #$40
+	.byte #$40
 
-	org $FFF2					; 9 bytes
 FruitBitMap:				 
+	.byte #%00000000
 	.byte #%00011000
 	.byte #%01101100
 	.byte #%11111111
@@ -134,7 +144,6 @@ FruitBitMap:
 	.byte #%11111101
 	.byte #%01111010
 	.byte #%00010100
-	.byte #%00000000
 
 	
 
