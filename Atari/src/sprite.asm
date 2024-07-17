@@ -123,27 +123,27 @@ Overscan:
 ;; SPRITES DEFINITION
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-FruitColorBitMap:				; 9 bytes Think about this as an aray with lenght 9 and indx from 0 to 8
+PlayerColorBitMap:				; 9 bytes Think about this as an aray with lenght 9 and indx from 0 to 8
 	.byte #$00
-	.byte #$D2
-	.byte #$44
-	.byte #$44
-	.byte #$42
-	.byte #$42
-	.byte #$40
-	.byte #$40
-	.byte #$40
+	.byte #$02
+	.byte #$02
+	.byte #$52
+	.byte #$52
+	.byte #$52
+	.byte #$52
+	.byte #$52
+	.byte #$52
 
-FruitBitMap:				 
+PlayerBitMap:				 
 	.byte #%00000000
-	.byte #%00011000
-	.byte #%01101100
-	.byte #%11111111
-	.byte #%11111101
-	.byte #%11111101
-	.byte #%11111101
-	.byte #%01111010
-	.byte #%00010100
+	.byte #%00010000
+	.byte #%00001000
+	.byte #%00011100
+	.byte #%00110110
+	.byte #%00101110
+	.byte #%00101110
+	.byte #%00111110
+	.byte #%00011100
 
 	
 
